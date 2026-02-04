@@ -1,6 +1,6 @@
 # DECISION-CONTROL-FOR-TRAFFIC-SIGNAL-
 ## Problem Statement 
-We are examining traffic lights that are not adjusting per the movement of traffic. We approximate the intersection by modeling it with randomised algorithms and by a Poisson distribution to deal with uncertainty in the arrival of cars at the intersection. This allows us to create a system that is able to make decisions on-the-fly. We hope to identify optimum signal timing such that to reduce waiting time of drivers, indicating that a probabilistic approach is superior to fixed-schedule controllers.
+We are examining traffic lights that are not adjusting per the movement of traffic. We approximate the intersection by modeling it with Markov Decision Process (MDP) and by a Poisson distribution to deal with uncertainty in the arrival of cars at the intersection. This allows us to create a system that is able to make decisions on-the-fly. We hope to identify optimum signal timing such that to reduce waiting time of drivers, indicating that a probabilistic approach is superior to fixed-schedule controllers.
 
 ## Random variables:
 - **Arrivals in time interval**: Number of vehicles arriving at the cross
