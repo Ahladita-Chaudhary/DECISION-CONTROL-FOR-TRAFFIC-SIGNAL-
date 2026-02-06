@@ -1,0 +1,175 @@
+Generate a scribe of lecture 10 of course CSE 400: Fundamentals of Probability in Computing, taught in Ahmedabad University, the scribe must be in a latex code, the format of the code is as followed, include group no: S1 G17, name:ARYA PATEL, ID:AU2440250, date, lecture 10 scribe, also the format is only for understanding the format and content is not be used in the generation of scribe, dont worked examples, dont miss application, dont miss any stuff from the slides and make scribe based on only data provided, Transcribe every visual example including step-by-step graph contractions and all diagrams such as successful or unsuccessful runs into detailed text or tables while providing the complete step-by-step mathematical derivation for every theorem specifically the Karger’s success probability proof exactly as shown in the source and describing the transition between each state of a worked example such as specific edge picks in Karger's so a student can follow the manual execution plus you must reconstruct all summary tables and why application slides for network design or VLSI into LaTeX-formatted structures to serve as quick exam references and finally you must follow a zero-summarization policy where you do not truncate multi-slide examples but instead treat every slide as unique and essential content to be preserved for revision.  
+
+\documentclass[11pt]{article}
+
+% ===================== PACKAGES =====================
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xcolor} 
+
+% ===================== HEADER & FOOTER =====================
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{CSE 400: Fundamentals of Probability in Computing}
+\rhead{Project Scribe Report}
+\cfoot{\thepage}
+
+% ===================== CUSTOM COMMANDS =====================
+\newcommand{\answer}{
+    \vspace{0.2cm}
+    \noindent\textbf{\textcolor{blue}{Answer:}}
+    \vspace{0.1cm}
+}
+
+% ===================== TITLE =====================
+\title{
+    \normalsize School of Engineering and Applied Science (SEAS), Ahmedabad University \\
+    \vspace{0.2cm}
+    \textbf{CSE 400: Fundamentals of Probability in Computing}\\
+    \Large Project Scribe Submission
+}
+\author{} 
+\date{}
+
+\begin{document}
+\maketitle
+
+\vspace{-2cm}
+\begin{center}
+    \begin{tabular}{ll}
+        \textbf{Group No.:} & {S1 G17 \hspace{2.5in}} \\ [1.5ex]
+        \textbf{Domain:} & {ITS \hspace{2.5in}} \\ [1.5ex]
+        \textbf{Date:} & {\today \hspace{2.2in}}
+    \end{tabular}
+\end{center}
+
+\hrule
+\vspace{0.5cm}
+
+% ===================== SCRIBE QUESTIONS =====================
+
+\begin{enumerate}[label=\textbf{Scribe Question \arabic*:}, leftmargin=*]
+
+    % --- QUESTION 1 ---
+    \item \textbf{Project System and Objective} \\
+    What is the probabilistic problem being addressed in your project? Clearly state the system objective and identify the primary sources of uncertainty involved.
+
+    \answer
+   Our project is an interest to correlate the traffic lights on a road junction that is controlled on one side and synchronised in real time at the intersection of a road. This is aimed at minimizing the average waiting time in the stop line as well as the entire travel time across the junction.
+
+We do not use an static time plan, but rather we consider the intersection to be a dynamical system that undergoes a rapid change of condition, during peak hours. We are thus trying to regulate signal cycle time Copt, the green phase splits in real time in accordance to what is being observed other than begin building queues.
+
+    \vspace{0.5cm}
+\newpage
+    % --- QUESTION 2 ---
+    \item \textbf{Key Random Variables and Uncertainty Modeling} \\
+    Identify the key random variables in your project and describe how uncertainty is modeled for each. Clearly state any probabilistic assumptions currently being made.
+
+    \answer
+    The uncertainty of our system is due to the random manner how vehicles arrive at cross roads. In reality, we can't predict arrivals of vehicles: traffic sometime moves fast and sometime slow, or forms a group, or because of holds given by the signs, slows down. Due to this fact, we consider the arrival process as a random variable which wanders around an average rather than being a value as in static designs. This fluctuation alters the length of the queue through time, as queues increase with arrival of cars and reduce when lights is green. We apply a modified Webster based timing calculation as our baseline and then applying fuzzy logic to this to gradually adjust C optimal and green splits when real traffic varies against the expected.
+
+\newpage
+    \vspace{0.5cm}
+
+    % --- QUESTION 3 ---
+    \item \textbf{Probabilistic Reasoning and Dependencies} \\
+    Explain how probabilistic relationships (e.g., dependence, independence, conditionality) are used within your project system to support reasoning, inference, or decision-making.
+
+    \answer
+    The only thing that counts in our traffic control issue is that what follows is what we see at the moment and what we set on this signal. Letting a direction be green longer so its cars will no longer be in the queue, but other directions might have their queues continue to increase as they will always continue to wait. There is a trade off with each option: the controller has to serve the main, high priority flow quickly and yet do not excessive service other flows. Since arrivals are random we can never be sure of our future but with existing data on hand we can change signal times such that the system remains in a steady state although the traffic may vary slightly.
+\newpage
+
+% --- QUESTION 4 ---
+    \item \textbf{Model--Implementation Alignment} \\
+    Describe how the current probabilistic model aligns with this project's implementation or experience. Highlight any assumptions that influenced design or evaluation choices.
+
+    \answer
+    The only thing that counts in our traffic control issue is that what follows is what we see at the moment and what we set on this signal. The effect of letting one direction hold on to the green longer is that its cars will no longer be in the queue, but other directions might have their queues continue to increase as they will always continue to wait. Thus there is a trade off with each option: the controller has to serve the main, high priority flow quickly and yet do not excessive service other flows. Since arrivals are random we can never be sure of our future but with existing data on hand we can change signal times such that the system remains in a steady state although the traffic may vary slightly.
+\newpage
+
+% --- QUESTION 5 ---
+    \item \textbf{Cross-Milestone Consistency and Change} \\
+    Describe the current state of your project's probabilistic model.
+Identify its key assumptions, components, or relationships that are presented as well-defined, and indicate which aspects are expected to evolve or require refinement in subsequent milestones.
+Briefly justify your expectations.
+
+    \answer
+   After examining the term probabilistic model, we are well aware of three things, namely 1) we desire a reduction in delay and queue, 2) we can regulate cycle time and green split as well as the largest uncertainty, that is, we can regulate the arrival of vehicles randomly.  
+Still to be determined: the description of the system state (may be queue thresholds or levels), the estimation of arrival rates based on the available data, and the conversion of the state into a timing decision which is predictable. This information might vary due to differences based on the layout of cross-roads, the sensor data we possess and what works best with the various traffic that it is tested on.
+\newpage
+
+% --- QUESTION 6 ---
+    \item \textbf{Open Issues and Responsibility Attribution} \\
+    Identify any unresolved probabilistic questions or ambiguities in the project at this stage, and indicate which role(s) or tasks are responsible for addressing them in the next milestone.
+
+    \answer
+  
+  Our definitions are the primary issues now and where we obtain our information. We are yet to select variables that indicate the current state of the system. The choices are queue length, flow or simply a label crowded/ uncrowded. We desire also a sure method of estimating arrivals in real time when traffic is at its peak. The frequency of changing the signal times is another issue. Over updating is also beneficial for the signal to adapt but its computationally expensive and may also cause the lights to become unstable when we over react to it.  
+
+The following milestone on data and sensing work should be concerned with the way of capturing or estimating arrival and queue statistics. The modeling work is supposed to lay down the state and action structure and the assumptions. The algorithm work must come up with a stable decision rule that is not changing at a rapid pace which adheres to the safety rules.
+
+\end{itemize}
+
+\end{enumerate}
+
+\bigskip
+\hrule
+\vspace{0.2cm}
+\begin{center}
+    \small \textit{End of Submission}
+\end{center}
+
+\end{document}
+
+the lecture ppt and the pages on which there are handwritten notes are uploaded as images also, use them for generation
+
+Scribe Description: the scribe is an graded component which can be used for academic reference material used for reading-based/closed-book exam, or for revision of that lecture
+
+The scribe should include:
+• Definitions and notation
+• Assumptions and conditions
+ 
+• Statements of theorems or results
+• Proofs or proof sketches, step by step
+• Worked examples, with intermediate steps
+• Clear logical flow between ideas
+
+A lecture scribe is not:
+• Acreative explanation
+• Asimplified tutorial
+• Atextbook rewrite
+• Asolution manual for unseen problems
+• Aplace to add intuition not discussed in class
+Everything included must be traceable to the provided context.
+
+Donts:
+Do not explain your reasoning, do not provide demonstrations, and do not include any plain-text commentary outside the LaTeX block .
+Do not include anything else other than mentioned in the lecture ppt and screenshots
+
+Structural & Formatting Expectations:  Follow the lecture's original structure, order, and scope. Organize the scribe with clear sectioning and mathematical environments suitable for revision.
+
+
+STRICT PROHIBITIONS (DON’TS)
+
+Do not add:
+motivation
+applications
+intuition
+textbook-style narration
+background explanations
+reworded or generalized definitions
+
+Do not include:
+creative explanations
+simplified tutorials
+content that could be written without attending the lecture
+algorithm summaries without mathematical justification
+
+Do not add:
+examples
+remarks
+interpretations
+unless they explicitly appear in the slides or handwritten notes
+
