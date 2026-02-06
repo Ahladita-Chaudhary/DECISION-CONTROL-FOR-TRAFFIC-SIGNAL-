@@ -1,0 +1,280 @@
+\documentclass[11pt]{article}
+
+% ===================== PACKAGES =====================
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{booktabs}
+
+% ===================== HEADER & FOOTER =====================
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{CSE 400: Fundamentals of Probability in Computing}
+\rhead{Lecture 10 Scribe}
+\cfoot{\thepage}
+
+% ===================== TITLE =====================
+\title{
+    \normalsize School of Engineering and Applied Science (SEAS), Ahmedabad University\\
+    \vspace{0.2cm}
+    \textbf{CSE 400: Fundamentals of Probability in Computing}\\
+    \Large Lecture 10 Scribe
+}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\vspace{-2cm}
+\begin{center}
+    \begin{tabular}{ll}
+        \textbf{Group No.:} & S1 G17 \\[1ex]
+        \textbf{Name:} & ARYA PATEL \\[1ex]
+        \textbf{ID:} & AU2440250 \\[1ex]
+        \textbf{Date:} & February 5, 2026
+    \end{tabular}
+\end{center}
+
+\hrule
+\vspace{0.5cm}
+
+\section*{Lecture 10: Randomized Min-Cut Algorithm}
+
+\section{Outline}
+\begin{itemize}
+    \item Min-Cut Problem
+    \item Why use min-cut?
+    \item What is min-cut?
+    \item Successful min-cut run
+    \item Unsuccessful min-cut run
+    \item Max-Flow Min-Cut Theorem
+    \item Deterministic Min-Cut Algorithm
+    \item Stoer--Wagner Minimum Cut Algorithm
+    \item Pseudocode
+    \item Randomized Min-Cut Algorithm
+    \item Why randomized algorithm?
+    \item Karger’s Randomized Algorithm
+    \item Pseudocode
+    \item Comparison: Deterministic vs Randomized Min-Cut
+    \item Theorem for min-cut set
+    \item Python Simulation
+\end{itemize}
+
+\section{Min-Cut Problem}
+
+\subsection{Why use min-cut?}
+We use the min-cut algorithm in various applications to solve problems related to network connectivity, reliability, and optimization.
+
+\begin{itemize}
+    \item \textbf{Network Design:} Min cut helps in improving the efficiency of communication and optimizing network flow. The algorithm is used in network design to find the minimum capacity cut.
+    \item \textbf{Communication Networks:} For understanding the vulnerability of networks to failures, minimum cut can be useful. It helps in building robust and fault-tolerant communication networks.
+    \item \textbf{VLSI Design:} In Very Large Scale Integration (VLSI) design, the algorithm is useful for partitioning circuits into smaller components leading to reduced interconnectivity complexity.
+\end{itemize}
+
+\subsection{What is min-cut?}
+
+\begin{definition}[Cut-Set]
+A cut-set in a graph is a set of edges whose removal breaks the graph into two or more connected components.
+\end{definition}
+
+\begin{definition}[Minimum Cut]
+Given a graph $G=(V,E)$ with $n$ vertices, the minimum cut (min-cut) problem is to find a cut-set of minimum cardinality in $G$.
+\end{definition}
+
+Min-cut algorithms such as Karger’s algorithm are random and can be sensitive to the initial choice of edges.
+
+\subsection{Edge Contraction}
+
+\begin{definition}[Edge Contraction]
+The main operation in the algorithm is edge contraction, which removes an edge $(u,v)$ from the graph while simultaneously merging vertices $u$ and $v$ into a single vertex.
+\end{definition}
+
+\begin{itemize}
+    \item Vertices $u$ and $v$ are merged into one vertex.
+    \item All edges connecting $u$ and $v$ are eliminated.
+    \item All other edges are retained.
+    \item The resulting graph may contain parallel edges but no self-loops.
+\end{itemize}
+
+\section{Successful Min-Cut Run}
+
+A successful min-cut run refers to the success in the outcome of an algorithm designed to find the minimum cut in a graph.
+
+\subsection*{Graph Contraction Sequence (Successful Run)}
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\toprule
+Step & Operation & Resulting Vertex Sets \\
+\midrule
+Initial & Original graph & $\{1,2,3,4\}$ \\
+1 & Contract edge $(2,3)$ & $\{1,\{2,3\},4\}$ \\
+2 & Contract edge $(\{2,3\},4)$ & $\{1,\{2,3,4\}\}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The remaining parallel edges between the two supernodes define the minimum cut.
+
+\section{Unsuccessful Min-Cut Run}
+
+An unsuccessful min-cut run refers to an iteration of a min-cut algorithm where the algorithm fails to correctly identify the minimum cut of a given graph.
+
+\subsection*{Graph Contraction Sequence (Unsuccessful Run)}
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\toprule
+Step & Operation & Resulting Vertex Sets \\
+\midrule
+Initial & Original graph & $\{1,2,3,4\}$ \\
+1 & Contract critical edge & $\{\{1,2\},3,4\}$ \\
+2 & Contract another edge & $\{\{1,2,3\},4\}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The final cut does not correspond to the minimum cut of the original graph.
+
+\section{Max-Flow Min-Cut Theorem}
+
+\begin{theorem}[Max-Flow Min-Cut Theorem]
+In a flow network, the maximum amount of flow passing from the source to the sink is equal to the total weight of the edges in a minimum cut.
+\end{theorem}
+
+\subsection*{Definitions}
+
+\begin{itemize}
+    \item \textbf{Capacity of a cut:} Sum of capacities of edges oriented from $X$ to $Y$.
+    \item \textbf{Minimum cut:} Cut with smallest possible capacity.
+    \item \textbf{Maximum flow:} Largest possible flow from source $S$ to sink $T$.
+\end{itemize}
+
+\section{Deterministic Min-Cut Algorithm}
+
+\subsection{Stoer--Wagner Min-Cut Algorithm}
+
+Let $s$ and $t$ be two vertices of a graph $G$. Let $G/\{s,t\}$ denote the graph obtained by merging $s$ and $t$.
+
+\begin{theorem}
+A minimum cut of $G$ is the smaller of:
+\begin{itemize}
+    \item A minimum $s$-$t$ cut of $G$
+    \item A minimum cut of $G/\{s,t\}$
+\end{itemize}
+\end{theorem}
+
+\subsection*{Pseudocode}
+
+\begin{verbatim}
+Algorithm 1: MinimumCutPhase(G, a)
+A ← {a}
+while A ≠ V do
+    add to A the most tightly connected vertex
+return cut weight
+
+Algorithm 2: MinimumCut(G)
+while |V| ≥ 1 do
+    choose any a from V
+    MinimumCutPhase(G, a)
+    if cut-of-the-phase < current minimum then
+        store cut
+    shrink G by merging last two vertices
+return minimum cut
+\end{verbatim}
+
+\section{Randomized Min-Cut Algorithm}
+
+\subsection{Why Randomized Algorithm?}
+
+\begin{itemize}
+    \item Probabilistic guarantee of success
+    \item Fewer iterations
+    \item Efficiency
+    \item Parallelization
+    \item Approximation guarantees
+    \item Avoidance of worst-case instances
+    \item Robustness
+\end{itemize}
+
+\subsection{Karger’s Randomized Algorithm}
+
+\subsection*{Worked Example (Step-by-Step)}
+
+\begin{itemize}
+    \item Start with undirected multigraph $G=(V,E)$
+    \item Randomly select an edge
+    \item Contract the selected edge
+    \item Repeat until only two vertices remain
+    \item Remaining parallel edges define the cut
+\end{itemize}
+
+\subsection*{Pseudocode}
+
+\begin{verbatim}
+Algorithm: Recursive-Randomized-Min-Cut(G, α)
+if n ≤ α then
+    return brute-force min-cut
+else
+    for i = 1 to α do
+        G' ← apply n - n/√α contractions
+        C' ← Recursive-Randomized-Min-Cut(G', α)
+        if |C'| < |C| then
+            C ← C'
+return C
+\end{verbatim}
+
+\section{Theorem for Min-Cut Set}
+
+\begin{theorem}
+The algorithm outputs a minimum cut with probability at least
+\[
+\frac{2}{n(n-1)}.
+\]
+\end{theorem}
+
+\subsection*{Proof (As Presented)}
+
+At each contraction step, the probability of not contracting a minimum cut edge is:
+\[
+1 - \frac{\lambda}{|E|} \geq 1 - \frac{2}{n}.
+\]
+
+Thus, the probability that no minimum cut edge is contracted over $(n-2)$ steps is:
+\[
+\prod_{i=0}^{n-3} \left(1 - \frac{2}{n-i}\right)
+= \frac{2}{n(n-1)}.
+\]
+
+\section{Comparison: Deterministic vs Randomized Min-Cut}
+
+\begin{center}
+\begin{tabular}{p{6cm}p{6cm}}
+\toprule
+Deterministic Min-Cut & Randomized Min-Cut \\
+\midrule
+Exact minimum cut & Approximate with high probability \\
+Higher time complexity & Lower expected time \\
+$O(VE + V^2 \log V)$ & $O(V^2)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Python Simulation}
+
+\begin{itemize}
+    \item Students instructed to open Campuswire post for Lecture 10
+    \item Download the provided \texttt{.ipynb} file
+\end{itemize}
+
+\hrule
+\vspace{0.2cm}
+\begin{center}
+\small End of Lecture 10 Scribe
+\end{center}
+
+\end{document}
