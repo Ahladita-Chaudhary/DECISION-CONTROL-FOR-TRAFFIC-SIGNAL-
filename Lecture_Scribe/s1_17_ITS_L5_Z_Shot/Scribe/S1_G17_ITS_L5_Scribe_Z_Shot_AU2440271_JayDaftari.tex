@@ -1,0 +1,235 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{CSE 400: Fundamentals of Probability in Computing}
+\rhead{Project Scribe Report}
+\cfoot{\thepage}
+
+\title{\normalsize School of Engineering and Applied Science (SEAS), Ahmedabad University \\
+\vspace{0.2cm}
+\textbf{CSE 400: Fundamentals of Probability in Computing}\\
+\Large Project Scribe Submission}
+
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-2cm}
+
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Group No.:} & {S1 G17 \hspace{2.5in}} \\[1.5ex]
+\textbf{Domain:} & {ITS \hspace{2.5in}} \\[1.5ex]
+\textbf{Date:} & {January 20, 2026 \hspace{2.2in}}
+\end{tabular}
+\end{center}
+
+\hrule
+\vspace{0.5cm}
+
+\section{Bayes' Theorem}
+
+\subsection{Weighted Average of Conditional Probabilities}
+
+Let $A$ and $B$ denote events in a sample space. Event $A$ may be decomposed as
+\[
+A = (A \cap B) \cup (A \cap B^c).
+\]
+The events $A \cap B$ and $A \cap B^c$ are mutually exclusive. By Axiom 3,
+\[
+\Pr(A) = \Pr(A \cap B) + \Pr(A \cap B^c).
+\]
+Using the definition of conditional probability,
+\[
+\Pr(A) = \Pr(A \mid B)\Pr(B) + \Pr(A \mid B^c)\bigl(1-\Pr(B)\bigr).
+\]
+The probability of event $A$ is expressed as a weighted average of conditional probabilities, where the weights are the probabilities of the conditioning events.
+
+\subsection{Learning by Example}
+
+\subsubsection*{Example 3.1: Accident-Prone Insurance (Part 1)}
+
+The population is partitioned into accident-prone and non–accident-prone individuals. Let
+\begin{itemize}
+\item $A$ denote the event that a policyholder is accident prone,
+\item $A_1$ denote the event that a policyholder has an accident within one year.
+\end{itemize}
+Given:
+\[
+\Pr(A)=0.3,\quad \Pr(A^c)=0.7,
+\]
+\[
+\Pr(A_1\mid A)=0.4,\quad \Pr(A_1\mid A^c)=0.2.
+\]
+Conditioning on $A$,
+\[
+\Pr(A_1)=\Pr(A_1\mid A)\Pr(A)+\Pr(A_1\mid A^c)\Pr(A^c).
+\]
+Hence,
+\[
+\Pr(A_1)=(0.4)(0.3)+(0.2)(0.7)=0.26.
+\]
+
+\subsubsection*{Example 3.1: Accident-Prone Insurance (Part 2)}
+
+Given that an accident has occurred within one year, the required probability is
+\[
+\Pr(A\mid A_1)=\frac{\Pr(A\cap A_1)}{\Pr(A_1)}.
+\]
+Using previously computed values,
+\[
+\Pr(A\mid A_1)=\frac{\Pr(A)\Pr(A_1\mid A)}{\Pr(A_1)}
+=\frac{(0.3)(0.4)}{0.26}=\frac{6}{13}.
+\]
+
+\subsection{Formal Introduction}
+
+\subsubsection{Law of Total Probability (Formula 3.4)}
+
+Let $B_1,B_2,\dots,B_n$ be mutually exclusive events with
+\[
+\bigcup_{i=1}^{n} B_i = B.
+\]
+For any event $A$,
+\[
+A=\bigcup_{i=1}^{n}(A\cap B_i),
+\]
+with mutually exclusive components. Therefore,
+\[
+\Pr(A)=\sum_{i=1}^{n}\Pr(A\cap B_i)
+      =\sum_{i=1}^{n}\Pr(A\mid B_i)\Pr(B_i).
+\]
+
+\subsubsection{Bayes Formula (Proposition 3.1)}
+
+Using $\Pr(A\cap B_i)=\Pr(B_i\mid A)\Pr(A)$, Bayes Formula is obtained:
+\[
+\Pr(B_i\mid A)=
+\frac{\Pr(A\mid B_i)\Pr(B_i)}
+{\sum_{j=1}^{n}\Pr(A\mid B_j)\Pr(B_j)}.
+\]
+Here,
+\begin{itemize}
+\item $\Pr(B_i)$ represents the \textbf{a priori probability},
+\item $\Pr(B_i\mid A)$ represents the \textbf{a posteriori probability}.
+\end{itemize}
+
+\subsection{Example 3.2: The Three Cards Problem}
+
+Three cards are available: one red–red (RR), one black–black (BB), and one red–black (RB). A card is selected uniformly and placed with one side up. Let $R$ denote the event that the upper side is red.
+
+The required probability is
+\[
+\Pr(RB\mid R)=\frac{\Pr(R\mid RB)\Pr(RB)}
+{\Pr(R\mid RR)\Pr(RR)+\Pr(R\mid RB)\Pr(RB)+\Pr(R\mid BB)\Pr(BB)}.
+\]
+Substituting values,
+\[
+\Pr(RB\mid R)=
+\frac{(1/2)(1/3)}
+{(1)(1/3)+(1/2)(1/3)+(0)(1/3)}=\frac{1}{3}.
+\]
+
+\section{Random Variables}
+
+\subsection{Motivation and Concept}
+
+A random variable is a real-valued function defined on a sample space $\Omega$,
+\[
+X:\Omega \rightarrow \mathbb{R}.
+\]
+It assigns a numerical value to each outcome of an experiment. Attention is restricted to discrete random variables whose ranges are finite or countably infinite.
+
+The distribution of a random variable is determined by
+\[
+\Pr[X=a]=\Pr(\{\omega\in\Omega : X(\omega)=a\}).
+\]
+
+\subsection{Examples}
+
+\subsubsection*{Example 1: Tossing Three Fair Coins}
+
+Let $Y$ denote the number of heads obtained. Then $Y$ takes values $\{0,1,2,3\}$ with
+\[
+\Pr(Y=0)=\frac{1}{8},\quad
+\Pr(Y=1)=\frac{3}{8},\quad
+\Pr(Y=2)=\frac{3}{8},\quad
+\Pr(Y=3)=\frac{1}{8}.
+\]
+Since $Y$ must assume one of these values,
+\[
+\sum_{i=0}^{3}\Pr(Y=i)=1.
+\]
+
+\section{Probability Mass Function}
+
+\subsection{Definition}
+
+A random variable that takes at most a countable number of values is discrete. Let $X$ be discrete with range
+\[
+R_X=\{x_1,x_2,x_3,\dots\}.
+\]
+The function
+\[
+p_X(x_k)=\Pr(X=x_k)
+\]
+is the Probability Mass Function (PMF) of $X$. It satisfies
+\[
+\sum_{k}p_X(x_k)=1.
+\]
+
+\subsection{Example: Two Independent Tosses of a Fair Coin}
+
+Let $X$ denote the number of heads obtained. Then
+\[
+p_X(x)=
+\begin{cases}
+\frac{1}{4}, & x=0 \text{ or } x=2,\\[0.5ex]
+\frac{1}{2}, & x=1,\\[0.5ex]
+0, & \text{otherwise}.
+\end{cases}
+\]
+Hence,
+\[
+\Pr(X>0)=\Pr(X=1)+\Pr(X=2)=\frac{3}{4}.
+\]
+
+\subsection{Solved PMF Problem}
+
+Let the PMF be defined by
+\[
+p(i)=c\frac{\lambda^i}{i!}, \quad i=0,1,2,\dots,
+\]
+where $\lambda>0$. Since
+\[
+\sum_{i=0}^{\infty}p(i)=1,
+\]
+it follows that
+\[
+c\sum_{i=0}^{\infty}\frac{\lambda^i}{i!}=1.
+\]
+Using the Taylor series expansion
+\[
+e^{\lambda}=\sum_{i=0}^{\infty}\frac{\lambda^i}{i!},
+\]
+we obtain
+\[
+c=e^{-\lambda}.
+\]
+Therefore,
+\[
+\Pr(X=0)=e^{-\lambda},
+\]
+and
+\[
+\Pr(X>2)=1-\bigl[p(0)+p(1)+p(2)\bigr].
+\]
+
+\end{document}
