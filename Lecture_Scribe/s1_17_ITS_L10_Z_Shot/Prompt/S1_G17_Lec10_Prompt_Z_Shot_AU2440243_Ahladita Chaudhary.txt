@@ -1,0 +1,4 @@
+Create a lecture scribe for lecture 10 provided above that can serve as a good reference for examination revision. The content is strictly to follow lecture slides and concerned textbook material provided. 
+You should not come up with any additional explanations, reading, examples and additional steps which are not already demonstrated by the given material. Improve the definitions, notation, assumptions, results, proofs or derivations and worked examples as they are presented in the lecture. 
+Arrange the scribe using clear section headings and have them in the same order and structure as it was in the classroom. Do not add new examples, descriptions, deductions, and other logical processes.
+Revise lecture notes that they are in their entirety and formatted in a clear and exam ready form. Give me proper latex format for this scribe.
