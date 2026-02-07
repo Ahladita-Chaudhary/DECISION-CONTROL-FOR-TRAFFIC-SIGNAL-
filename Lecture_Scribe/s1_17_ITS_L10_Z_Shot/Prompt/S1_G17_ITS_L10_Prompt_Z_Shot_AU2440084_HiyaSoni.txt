@@ -1,0 +1,64 @@
+help me generate a lecture scribe that is formal for the provided lecture of my course CSE 400: Fundamentals of Probability in Computing.
+
+The scribe must be a strictly as exam-oriented reference material for reading-based or as a closed-book revision. I should be able to fully revise the lecture using only this document, without consulting any external source. 
+
+Context Restriction (Strict):
+Use only the provided lecture PowerPoint slides.
+Do not use external knowledge, textbook material, inferred intuition, reinterpretations, or added explanations.
+Every definition, theorem, algorithm, formula, proof, and example included must be directly traceable to the slides.
+
+Content to Include (Only if present in the lecture):
+
+Formal definitions and notation
+
+Explicit assumptions and stated conditions
+
+Clearly stated theorems or propositions
+
+Proofs or proof sketches written step by step, exactly as presented
+
+Algorithms and pseudocode written faithfully
+
+Worked examples shown in the lecture, with all intermediate steps
+
+Structure and Presentation:
+
+Follow the exact topic order and logical flow of the lecture
+
+Use clear LaTeX sectioning (\section, \subsection)
+
+Present definitions, theorems, propositions, and algorithms in clearly identifiable environments
+
+Clearly label Proof, Algorithm, and Solution blocks for easy exam revision
+
+Exclude any content that is administrative, illustrative, or non-examinable
+
+Strict Exclusions:
+Do not include:
+
+Motivation, intuition, or descriptive discussion
+
+Practical demonstrations, simulations, or implementation details
+
+Comparative commentary unless it is explicitly stated as a formal result in the lecture
+
+Any content not directly required for exam revision
+
+Output Format: 
+
+Output only complete LaTeX source code, enclosed within a single
+\documentclass … \end{document} block
+
+Do not include any text outside the LaTeX code
+
+The LaTeX document must explicitly include:
+
+Course name
+
+Lecture number (as shown in the slides)
+
+Group No.: S1 G17
+
+Date
+
+The final output must be a precise, structured, exam-ready reconstruction of the lecture, prioritizing correctness, clarity, and revision usability over explanation or narrative.

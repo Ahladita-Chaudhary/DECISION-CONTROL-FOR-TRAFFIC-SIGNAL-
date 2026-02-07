@@ -1,0 +1,41 @@
+help me generate a lecture scribe for Lecture 5 of the course CSE 400 Fundamentals of Probability in Computing
+OUTPUT: formal lecture scribe, intended strictly as a exam oriented reference material for reading-based or closed-book revision, I should be able to revise Lecture 5 using only this document, without referring to any external source
+
+Context Restriction: (FOLLOW STRICTLY)
+Use only the provided Lecture 5 PowerPoint slides 
+Do not use external knowledge, textbook material not explicitly shown, inferred intuition, reinterpretations, or additional explanations
+Every definition, formula, example, and derivation must be directly traceable to the provided context
+
+Required Content (Include only if present in the lecture):
+Formal definitions and notation
+Explicit assumptions and conditions
+Clearly stated theorems, propositions, or named results
+Proofs or proof sketches written step by step, exactly as presented
+Worked examples with all intermediate steps shown
+
+Structural Expectations: (COMPULSORY)
+
+Follow the exact topic order and logical flow of Lecture 5
+Organize the scribe using clear LaTeX sectioning (\section, \subsection)
+Present theorems, propositions, and formulas in clearly identifiable mathematical environments
+
+Clearly mark proofs and example solutions so they are easy to locate during revision
+Exclude any content that is administrative or unrelated to examinable material
+Strict Exclusions:
+Do not add:
+New examples or problems
+Intuition, motivation, or explanatory commentary beyond what appears in the lecture
+Simplifications, summaries, or textbook-style elaborations
+Any reasoning or explanation outside the lecture material
+Output Format (Non-Negotiable):
+Output only complete LaTeX source code, enclosed within a single
+\documentclass … \end{document} block
+Do not include any plain text, commentary, or explanations outside the LaTeX code
+
+The LaTeX document must explicitly include:
+
+Course name
+Lecture number (Lecture 5)
+Group No.: S1 G17
+Date
+The final output must be a faithful, well-structured, exam-ready reconstruction of Lecture 5, with emphasis on clarity, correctness, and revision usability.
