@@ -1,0 +1,10 @@
+<additionals>
+    <laneAreaDetector id="e2_N_0" lane="N_to_C_0" pos="0"    endPos="80" freq="3" file="NUL"/>
+    <laneAreaDetector id="e2_N_1" lane="N_to_C_1" pos="0"    endPos="80" freq="3" file="NUL"/>
+    <laneAreaDetector id="e2_S_0" lane="S_to_C_0" pos="0"    endPos="80" freq="3" file="NUL"/>
+    <laneAreaDetector id="e2_S_1" lane="S_to_C_1" pos="0"    endPos="80" freq="3" file="NUL"/>
+    <laneAreaDetector id="e2_E_0" lane="E_to_C_0" pos="0"    endPos="80" freq="3" file="NUL"/>
+    <laneAreaDetector id="e2_E_1" lane="E_to_C_1" pos="0"    endPos="80" freq="3" file="NUL"/>
+    <laneAreaDetector id="e2_W_0" lane="W_to_C_0" pos="0"    endPos="80" freq="3" file="NUL"/>
+    <laneAreaDetector id="e2_W_1" lane="W_to_C_1" pos="0"    endPos="80" freq="3" file="NUL"/>
+</additionals>
