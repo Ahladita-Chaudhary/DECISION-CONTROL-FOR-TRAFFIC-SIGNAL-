@@ -78,13 +78,17 @@ pip install -r requirements.txt
 
 ---
 
-## How to Run
+# How to Run
+
 First, navigate to the project directory:
+
 ```bash
 cd code
 ```
 
-Then run the three steps in order.
+Then run the steps in order.
+
+---
 
 ### Step 1 — Generate Traffic Demand
 
@@ -94,20 +98,31 @@ python src/generate_demand.py
 
 Generates `data/demand.rou.xml` with **Poisson-distributed vehicle arrivals**.
 
-- **Off-peak (0–50s):** λ = 0.17 vehicles/s (~200 veh/hr)  
-- **Build-up (50–150s):** λ = 0.42 vehicles/s (~500 veh/hr)  
+This file is shared by both simulations — it only needs to be generated once.
+
+### Demand Profile
+
+- **Off-peak (0–50s):** λ = 0.17 vehicles/s (~200 veh/hr)
+- **Build-up (50–150s):** λ = 0.42 vehicles/s (~500 veh/hr)
 - **Peak Hour (150–300s):** λ = 0.50 vehicles/s (~600 veh/hr)
 
 ---
 
-### Step 2 — Run Simulation
+### Step 2a — Run Fixed Timer Simulation (Baseline)
 
 ```bash
 python src/runner.py
 ```
 
-Opens **SUMO-GUI** and runs the simulation.  
-Logs queue length, waiting time, and congestion state every **3 seconds** to:
+Opens **SUMO-GUI** and runs the **8-phase fixed-timer simulation**.
+
+Metrics recorded every **3 seconds**:
+
+- Queue length  
+- Waiting time  
+- Congestion state  
+
+Results are saved to:
 
 ```
 data/simulation_log.csv
@@ -115,24 +130,159 @@ data/simulation_log.csv
 
 ---
 
-### Step 3 — Analyse Results
+### Step 2b — Run TOD Timer Simulation (Deterministic Controller)
+
+```bash
+python src/runner_tod.py
+```
+
+Opens **SUMO-GUI** and runs the **Time-of-Day (TOD) scheduled timer simulation**.
+
+Green durations adapt to the demand phase (**off-peak / build-up / peak**).
+
+Results are logged every **3 seconds** to:
+
+```
+data/simulation_log_tod.csv
+```
+
+### TOD Signal Timing
+
+| Demand Phase | Time Window | Green Duration |
+|---------------|-------------|----------------|
+| Off-peak | 0 – 50s | 15s |
+| Build-up | 50 – 150s | 25s |
+| Peak Hour | 150 – 300s | 40s |
+
+---
+
+# Step 3 — Analyse and Compare Results
 
 ```bash
 python src/analysis.py
 ```
 
-Produces the following output plots:
+Reads both simulation logs and produces all output charts.
 
-- `experiments/queue_vs_time.png`
-- `experiments/waiting_time_vs_time.png`
-- `experiments/chebyshev_histogram.png`
+---
 
-Console output includes:
+# Output Plots
 
-- Variance calculation
-- Jensen's Inequality verification
-- Statistical summary of traffic metrics
+The analysis script generates the following plots inside the `experiments/` directory.
 
+| File | Description |
+|-----|-------------|
+| `chebyshev_histogram.png` | Queue distribution comparison with Chebyshev probability bounds |
+| `chernoff_bound.png` | Chernoff bounds showing probability of burst arrivals under Poisson demand |
+| `fixed_vs_tod_queue_sidebyside.png` | Queue length comparison over time for Fixed vs TOD controller |
+| `fixed_vs_tod_waiting_sidebyside.png` | Waiting time comparison over time for Fixed vs TOD controller |
+
+---
+
+# Plot Analysis (Summary)
+
+The analysis script generates several plots comparing the **Fixed Timer** controller with the **Time-of-Day (TOD)** scheduled controller.
+
+## Queue Distribution with Chebyshev Bounds
+
+This plot compares the **distribution of queue lengths** for both controllers and overlays Chebyshev bounds.
+
+Key points:
+- Both controllers produce **similar queue distributions**
+- Maximum queue length observed is **around 10 vehicles**
+- TOD slightly reduces **queue variance**, indicating marginally more stable traffic flow
+
+---
+
+## Chernoff Bounds for Poisson Arrivals
+
+This plot analyzes **arrival burst probabilities** using Chernoff bounds under Poisson traffic demand.
+
+Key points:
+- Off-peak traffic rarely produces burst arrivals
+- Burst arrivals become more probable during **build-up and peak phases**
+- This randomness explains why deterministic controllers struggle during heavy demand
+
+---
+
+## Queue Length Comparison
+
+This plot compares **queue length over time** for Fixed Timer and TOD scheduling.
+
+Key points:
+- Queues increase significantly during the **peak demand phase**
+- TOD scheduling results in **slightly smoother queue behavior**
+- However, maximum queue levels remain similar for both controllers
+
+---
+
+## Waiting Time Comparison
+
+This plot compares **total waiting time accumulated by vehicles**.
+
+Key points:
+- Waiting time increases rapidly during **peak traffic periods**
+- TOD scheduling does not significantly reduce delay
+- Both controllers are limited when traffic arrivals become highly stochastic
+
+---
+
+# Console Output
+
+The analysis script prints:
+
+### Statistical Summary
+- Mean queue length
+- Median queue length
+- Variance
+- Standard deviation
+
+### Jensen's Inequality Verification
+This compares:
+
+```
+f(E[Q])  vs  E[f(Q)]
+```
+
+Result:
+
+Real traffic delay is **higher than predicted using average queue values**, confirming the nonlinear nature of traffic congestion.
+
+---
+
+### Comparison Metrics
+
+The script also reports:
+
+- Mean queue length comparison
+- Variance comparison
+- Maximum queue observed
+- Queue reduction percentage
+- Variance reduction
+- Jensen gap difference
+
+These metrics quantify whether the TOD controller improves stability compared to the fixed-timer baseline.
+
+---
+
+# Key Insights from the Experiment
+
+From the simulation results we observe:
+
+
+1. **Fixed timers cannot adapt to demand changes**  
+   Queue spikes appear during peak periods.
+
+2. **TOD scheduling improves stability slightly**  
+   Variance of queue lengths decreases, meaning queues fluctuate less.
+
+3. **However TOD does not fully eliminate congestion**  
+   Peak demand still creates large queues and long waiting times.
+
+4. **This suggests adaptive control is needed**  
+   A dynamic controller (MDP or reinforcement learning) could react to real-time queue conditions instead of relying on predetermined schedules.
+
+---
 
 ## Members
 - Swayam Prajapati
