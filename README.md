@@ -156,7 +156,7 @@ data/simulation_log_tod.csv
 
 ---
 
-# Step 3 — Analyse and Compare Results
+### Step 3 — Analyse and Compare Results
 
 ```bash
 python src/analysis.py
@@ -166,7 +166,7 @@ Reads both simulation logs and produces all output charts.
 
 ---
 
-# Output Plots
+## Output Plots
 
 The analysis script generates the following plots inside the `experiments/` directory.
 
