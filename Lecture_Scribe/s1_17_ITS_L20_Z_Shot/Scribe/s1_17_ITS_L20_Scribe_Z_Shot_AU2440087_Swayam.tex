@@ -1,0 +1,232 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+
+\title{CSE400 - Fundamentals of Probability in Computing\\
+Lecture 20: Linear Transformations and Expectations of Multiple RVs}
+\author{Swayam Prajapati, AU2440087}
+\date{March 19, 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{Outline}
+\begin{itemize}
+    \item Statistical Representation of Random Vectors
+    \item Mean Vector, Correlation, and Covariance Matrices
+    \item Linear Transformations
+    \item Mapping properties under $Y = AX + b$
+    \item Multivariate Gaussian Distributions
+    \item From 1D/2D cases to N-dimensional Joint PDFs
+    \item Special Cases and Properties
+    \item Implications of zero correlation and matrix factorization
+\end{itemize}
+\newpage
+
+\section{Random Vector Representation}
+
+\subsection{Vector Form of Multiple Random Variables}
+
+\textbf{Random Vector}
+
+For random variables $X_1, X_2, \dots, X_N$, we represent them as a vector:
+
+\[
+X =
+\begin{bmatrix}
+X_1 \\
+X_2 \\
+\vdots \\
+X_N
+\end{bmatrix}
+\]
+
+\begin{itemize}
+    \item $X$ is called a \textbf{random vector}.
+    \item It provides a compact representation of multiple random variables.
+\end{itemize}
+
+\section{Mean Vector}
+
+\subsection{Expectation of a Random Vector}
+
+\textbf{Mean Vector Definition}
+
+The mean vector of $X$ is:
+
+\[
+\mu_X = E[X]
+\]
+
+\begin{itemize}
+    \item Represents the average value of the random vector.
+    \item Each element corresponds to the mean of one random variable.
+\end{itemize}
+
+\subsection{Example Structure}
+
+\[
+\mu_X =
+\begin{bmatrix}
+E[X_1] \\
+E[X_2] \\
+\vdots \\
+E[X_N]
+\end{bmatrix}
+\]
+
+\section{Correlation Matrix}
+
+\subsection{Correlation Between Multiple RVs}
+
+\textbf{Correlation Matrix}
+
+\[
+R_{XX} = E[X X^T]
+\]
+
+where $i, j \leq N$,
+
+\[
+R_{XX}(i,j) = E[X_i X_j]
+\]
+
+\subsection{Matrix Representation}
+
+\[
+R_{XX} =
+\begin{bmatrix}
+E[X_1 X_1] & E[X_1 X_2] & \cdots & E[X_1 X_N] \\
+E[X_2 X_1] & E[X_2 X_2] & \cdots & E[X_2 X_N] \\
+\vdots & \vdots & \ddots & \vdots \\
+E[X_N X_1] & E[X_N X_2] & \cdots & E[X_N X_N]
+\end{bmatrix}
+\]
+
+\begin{itemize}
+    \item $R_{XX}$ is a symmetric matrix.
+\end{itemize}
+
+\section{Covariance Matrix}
+
+\subsection{Mathematical Definition}
+
+For a random vector $X$, the covariance matrix $C_{XX}$ is:
+
+\[
+C_{XX} = E[(X - \mu_X)(X - \mu_X)^T]
+\]
+
+\subsection{Matrix Form in Practice}
+
+\[
+C_{XX} =
+\begin{bmatrix}
+\mathrm{Var}(X_1) & \mathrm{Cov}(X_1, X_2) & \cdots \\
+\mathrm{Cov}(X_2, X_1) & \mathrm{Var}(X_2) & \cdots \\
+\vdots & \vdots & \ddots
+\end{bmatrix}
+\]
+
+\begin{itemize}
+    \item Symmetry: $\mathrm{Cov}(X_i, X_j) = \mathrm{Cov}(X_j, X_i)$
+\end{itemize}
+
+\section{Linear Transformation of Random Vectors}
+
+\subsection{The Linear Model}
+
+Consider the transformation:
+
+\[
+Y = AX + b
+\]
+
+\begin{itemize}
+    \item $A$: Transformation matrix (scales and rotates the data)
+    \item $b$: Constant vector (shifts/translates the center)
+    \item $X$: Input random vector
+\end{itemize}
+
+For $N$ dimensional vectors:
+
+\[
+Y_1 = a_{11}X_1 + a_{12}X_2 + \cdots + a_{1N}X_N + b_1
+\]
+\[
+Y_2 = a_{21}X_1 + a_{22}X_2 + \cdots + a_{2N}X_N + b_2
+\]
+\[
+\vdots
+\]
+\[
+Y_N = a_{N1}X_1 + a_{N2}X_2 + \cdots + a_{NN}X_N + b_N
+\]
+
+\section{Mean of Transformed Vector}
+
+\subsection{Mean Transformation}
+
+For a linear transformation $Y = AX + b$:
+
+\[
+\mu_Y = E[Y]
+\]
+
+\subsection{Derivation}
+
+Substitute $Y = AX + b$ into the expectation:
+
+\[
+\mu_Y = E[AX + b]
+\]
+
+Apply linearity:
+
+\[
+E[AX] + E[b]
+\]
+
+\subsection{Result}
+
+\[
+\mu_Y = A \mu_X + b
+\]
+
+\section{Correlation Matrix Transformation}
+
+\subsection{Definition}
+
+\[
+R_{YY} = E[Y Y^T] = E[(AX + b)(AX + b)^T]
+\]
+
+\subsection{Expansion of Terms}
+
+\[
+R_{YY} = E[AXX^T A^T + AXb^T + bX^T A^T + bb^T]
+\]
+
+\subsection{Applying Expectation}
+
+\[
+R_{YY} = A E[XX^T] A^T + A E[X] b^T + b E[X^T] A^T + bb^T
+\]
+
+\subsection{Final Result}
+
+\[
+R_{YY} = A R_{XX} A^T + A \mu_X b^T + b \mu_X^T A^T + bb^T
+\]
+
+\section{Covariance Matrix Transformation}
+
+\subsection{Key Observation}
+
+The deviation from the mean is independent of the shift $b$:
+
+\[
+Y - \mu_Y = (AX + b) - (A\mu_X + b) = A(X - \mu_X)
+\]
+
+\end{document}
